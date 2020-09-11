@@ -19,7 +19,7 @@
 import Nav from "./components/Nav.vue";
 import CreateCohort from "./views/CreateCohort.vue";
 import SelectCohort from "./views/SelectCohort.vue";
-import Cohort from "./views/Cohort.vue";
+import Cohort from "./views/Cohort";
 
 export default {
   name: "App",
