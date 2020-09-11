@@ -24,4 +24,17 @@ router.route("/")
       })
   })
 
+router.route("/:id")
+  .get((req, res) => {
+    db.Cohort
+      .find({ _id: req.params.id })
+      .populate("students")
+      .then(data => {
+        res.json(data);
+      })
+      .catch(() => {
+        res.json(false);
+      })
+  })
+
 module.exports = router
