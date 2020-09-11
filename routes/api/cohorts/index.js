@@ -36,5 +36,15 @@ router.route("/:id")
         res.json(false);
       })
   })
+  .delete((req, res) => {
+    db.Cohort
+      .deleteOne({ _id: req.params.id })
+      .then(() => {
+        res.json(true);
+      })
+      .catch(() => {
+        res.json(false);
+      })
+  })
 
 module.exports = router

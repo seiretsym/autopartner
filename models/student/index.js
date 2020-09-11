@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Cohort = require("../cohort");
-const ObjectId = require("mongoose").Types.ObjectId;
 
 // schema structure
 const Schema = mongoose.Schema

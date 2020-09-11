@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Student = require("../student");
 
 // schema structure
 const Schema = mongoose.Schema
@@ -14,6 +15,15 @@ const CohortSchema = new Schema({
     ref: "Student"
   }],
   currentPairs: []
+})
+
+// hook to cascade delete students when a cohort is deleted
+CohortSchema.pre("deleteOne", function (next) {
+  Student
+    .deleteMany({ cohort: mongoose.Types.ObjectId(this._conditions._id) })
+    .then(() => {
+      next();
+    })
 })
 
 // create model
