@@ -12,7 +12,8 @@ const CohortSchema = new Schema({
   students: [{
     type: Schema.Types.ObjectId,
     ref: "Student"
-  }]
+  }],
+  currentPairs: []
 })
 
 // create model
