@@ -9,8 +9,8 @@
           Cohort
         </button>
         <div class="dropdown-menu bg-success" aria-labelledby="navbarDropdown">
-          <button class="dropdown-item text-light" v-on:click="changeView" data="cohort_create">Create New</button>
-          <button class="dropdown-item text-light" v-on:click="changeView" data="cohort_select">Select Cohort</button>
+          <button class="dropdown-item text-light" v-on:click="changeView" data-view="cohort_create">Create New</button>
+          <button class="dropdown-item text-light" v-on:click="changeView" data-view="cohort_select">Select Cohort</button>
         </div>
       </li>
     </ul>

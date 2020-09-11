@@ -28,7 +28,7 @@ StudentSchema.pre("remove", function (next) {
 })
 
 // create model
-const Student = mongoose.model("Cohort", StudentSchema);
+const Student = mongoose.model("Student", StudentSchema);
 
 // export model
 module.exports = Student;

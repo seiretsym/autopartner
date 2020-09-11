@@ -4,12 +4,24 @@ const db = require("../../../models");
 // path to /api/cohorts/
 router.route("/")
   .get((req, res) => {
-    console.log("?")
-    res.json("true");
+    db.Cohort
+      .find({})
+      .then(data => {
+        res.json(data);
+      })
+      .catch(err => {
+        res.json(false);
+      })
   })
   .post((req, res) => {
-    console.log("made it here");
-    res.json(true);
+    db.Cohort
+      .create(req.body)
+      .then(() => {
+        res.json(true);
+      })
+      .catch(() => {
+        res.json(false)
+      })
   })
 
 module.exports = router

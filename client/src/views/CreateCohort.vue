@@ -35,7 +35,11 @@ export default {
       axios
         .post("/api/cohorts", newCohort)
         .then(data => {
-          console.log(data);
+          alert("New Cohort Added");
+          this.$refs.cohortName.value = "";
+        })
+        .catch(() => {
+          alert("Unable to add a new cohort.")
         })
     }
   }

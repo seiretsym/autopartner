@@ -4,7 +4,7 @@
       <h1 class="display-1">Auto Partner</h1>
     </div>
     <Nav :changeView="changeView" />
-    <div :is="view"/>
+    <div :is="view" :cohort="cohort" :changeView="changeView" />
   </div>
 </template>
 
@@ -18,7 +18,8 @@
 <script>
 import Nav from "./components/Nav.vue";
 import CreateCohort from "./views/CreateCohort.vue";
-import SelectCohort from "./views/SelectCohort.vue"
+import SelectCohort from "./views/SelectCohort.vue";
+import Cohort from "./views/Cohort.vue";
 
 export default {
   name: "App",
@@ -30,18 +31,23 @@ export default {
   data: function() {
     return {
       view: null,
+      cohort: String
     }
   },
   methods: {
     changeView: function(event) {
       event.preventDefault();
-      const view = event.target.getAttribute("data");
+      const view = event.target.getAttribute("data-view");
       switch(view) {
         case "cohort_create":
           this.view = CreateCohort;
           break;
         case "cohort_select":
           this.view = SelectCohort;
+          break;
+        case "cohort_selected":
+          this.cohort = event.target.getAttribute("data")
+          this.view = Cohort;
           break;
         default:
           this.view = null;
