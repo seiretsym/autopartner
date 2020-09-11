@@ -79,7 +79,7 @@ export default {
     }
   },
   mounted() {
-
+    this.getCohorts();
   }
 }
 </script>

@@ -39,10 +39,12 @@ router.route("/:id")
   .delete((req, res) => {
     db.Cohort
       .deleteOne({ _id: req.params.id })
-      .then(() => {
+      .then((data) => {
+        console.log(data)
         res.json(true);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         res.json(false);
       })
   })

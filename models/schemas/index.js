@@ -1,8 +1,30 @@
 const mongoose = require("mongoose");
-const Cohort = require("../cohort");
+// const Student = require("../student");
 
 // schema structure
 const Schema = mongoose.Schema
+
+// create schema
+const CohortSchema = new Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  students: [{
+    type: Schema.Types.ObjectId,
+    ref: "Student"
+  }],
+  currentPairs: []
+})
+
+// hook to cascade delete students when a cohort is deleted
+CohortSchema.pre("deleteOne", function (next) {
+  Student
+    .deleteMany({ cohort: mongoose.Types.ObjectId(this._conditions._id) })
+    .then(() => {
+      next();
+    })
+})
 
 // create schema
 const StudentSchema = new Schema({
@@ -20,7 +42,7 @@ const StudentSchema = new Schema({
 // hook to remove student from existing cohorts when a student is deleted
 StudentSchema.pre("deleteOne", function (next) {
   Cohort
-    .findOneAndUpdate({ _id: this._conditions.cohort },
+    .findOneAndUpdate({ _id: mongoose.Types.ObjectId(this._conditions.cohort) },
       {
         $pull: {
           students: mongoose.Types.ObjectId(this._conditions._id)
@@ -32,21 +54,25 @@ StudentSchema.pre("deleteOne", function (next) {
 })
 
 // hook to add student to a cohort after a student is created
-StudentSchema.post("save", function () {
+StudentSchema.post("save", function (next) {
   Cohort
     .findOneAndUpdate({ _id: this.cohort },
       {
         $push: {
           students: this._id
         }
-      })
+      }, { new: true })
     .then(() => {
-      return;
+      return next;
     })
 })
 
 // create model
 const Student = mongoose.model("Student", StudentSchema);
 
+
+// create model
+const Cohort = mongoose.model("Cohort", CohortSchema);
+
 // export model
-module.exports = Student;
+module.exports = { Cohort: Cohort, Student: Student };

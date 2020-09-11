@@ -1,4 +1,1 @@
-module.exports = {
-  Cohort: require("./cohort"),
-  Student: require("./student")
-}
+module.exports = require("./schemas");

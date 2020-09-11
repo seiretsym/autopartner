@@ -18,10 +18,12 @@ router.route("/:id/:cohort")
   .delete((req, res) => {
     db.Student
       .deleteOne({ _id: req.params.id, cohort: req.params.cohort })
-      .then(() => {
+      .then((data) => {
+        console.log(data);
         res.json(true)
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         res.json(false)
       })
   })
