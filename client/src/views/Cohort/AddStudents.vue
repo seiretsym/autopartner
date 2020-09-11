@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-darkgreen rounded p-0">
+  <div class="bg-darkgreen rounded body pr-3 p-0">
   <form>
     <div v-for="(student, i) in students" :key="i" class="form-group">
       <label for="name" class="text-light">Student Name</label>
@@ -13,7 +13,7 @@
     </div>
     <button v-on:click="addMoreStudents" class="btn btn-success mr-3">+</button>
     <hr class="bg-secondary"/>
-    <button v-on:click="saveStudents" ref="saveBtn" class="btn btn-success disabled">Submit</button>
+    <button v-on:click="saveStudents" ref="saveBtn" data-view="view_students" class="btn btn-success disabled">Submit</button>
   </form>
 </div>
 </template>
@@ -28,6 +28,11 @@ input:focus {
   background-color: darkgreen;
   pointer-events: none;
 }
+
+.body {
+  height: 485px;
+  overflow: auto;
+}
 </style>
 
 <script>
@@ -37,6 +42,7 @@ export default {
   name: "AddStudents",
   props: {
     cohort: String,
+    changeView: Function
   },
   data: function() {
     return {
@@ -72,6 +78,7 @@ export default {
         .post("/api/students", students)
         .then(() => {
           alert("Students added to cohort.")
+          this.changeView(event);
         })
         .catch(() => {
           alert("Problem adding students to cohort. Please check input fields.")

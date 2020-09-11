@@ -9,7 +9,7 @@
       </div>
     </div>
     <hr class="bg-secondary"/>
-    <div :is="view" :cohort="cohort"/>
+    <div :is="view" :cohort="cohort" :changeView="changeView"/>
   </div>
 </template>
 
