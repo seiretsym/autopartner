@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Cohort = require("../cohort");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 // schema structure
 const Schema = mongoose.Schema
@@ -18,12 +19,12 @@ const StudentSchema = new Schema({
 })
 
 // hook to remove student from existing cohorts when a student is deleted
-StudentSchema.pre("remove", function (next) {
+StudentSchema.pre("deleteOne", function (next) {
   Cohort
-    .find({},
+    .findOneAndUpdate({ _id: this._conditions.cohort },
       {
         $pull: {
-          students: this._id
+          students: mongoose.Types.ObjectId(this._conditions._id)
         }
       })
     .then(() => {
@@ -32,7 +33,7 @@ StudentSchema.pre("remove", function (next) {
 })
 
 // hook to add student to a cohort after a student is created
-StudentSchema.post("save", function (next) {
+StudentSchema.post("save", function () {
   Cohort
     .findOneAndUpdate({ _id: this.cohort },
       {
@@ -41,9 +42,8 @@ StudentSchema.post("save", function (next) {
         }
       })
     .then(() => {
-      next();
+      return;
     })
-
 })
 
 // create model

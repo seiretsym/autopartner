@@ -14,10 +14,10 @@ router.route("/")
       })
   })
 
-router.route("/:id")
+router.route("/:id/:cohort")
   .delete((req, res) => {
     db.Student
-      .deleteOne({ _id: req.params.id })
+      .deleteOne({ _id: req.params.id, cohort: req.params.cohort })
       .then(() => {
         res.json(true)
       })

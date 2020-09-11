@@ -50,7 +50,7 @@ export default {
       event.preventDefault();
       const id = event.target.getAttribute("data")
       axios
-        .delete(`/api/students/${id}`)
+        .delete(`/api/students/${id}/${this.cohort}`)
         .then(() => {
           this.getStudents();
           alert(`${event.target.getAttribute("data-name")} has been removed from the roster`)
