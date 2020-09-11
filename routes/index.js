@@ -2,7 +2,7 @@ const router = require("express").Router();
 const api = require("./api");
 
 // path to /api
-router.route("/api", api);
+router.use("/api", api);
 
 // send index.html to client on request for production
 if (process.env.NODE_ENV === "production") {

@@ -3,9 +3,9 @@ const cohorts = require("./cohorts");
 const students = require("./students");
 
 // path to /api/cohorts
-router.route("/cohorts", cohorts);
+router.use("/cohorts", cohorts);
 
 // path to /api/students
-router.route("/students", students);
+router.use("/students", students);
 
 module.exports = router;
