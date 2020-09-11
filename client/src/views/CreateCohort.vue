@@ -6,7 +6,7 @@
     <div class="form-group">
       <label for="name" class="text-light">Cohort Name</label>
       <input type="name" class="form-control" id="name" aria-describedby="name" ref="cohortName">
-      <small id="emailHelp" class="form-text text-muted">Pick a name to help identify your cohort.</small>
+      <small class="form-text text-muted">Pick a name to help identify your cohort.</small>
     </div>
     <button type="submit" v-on:click="createCohort" class="btn btn-success">Submit</button>
   </form>

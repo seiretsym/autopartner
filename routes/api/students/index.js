@@ -14,4 +14,16 @@ router.route("/")
       })
   })
 
+router.route("/:id")
+  .delete((req, res) => {
+    db.Student
+      .remove({ _id: req.params.id })
+      .then(() => {
+        res.json(true)
+      })
+      .catch(() => {
+        res.json(false)
+      })
+  })
+
 module.exports = router

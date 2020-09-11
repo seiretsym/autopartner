@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-darkgreen rounded">
+  <div class="bg-darkgreen rounded p-0">
   <form>
     <div v-for="(student, i) in students" :key="i" class="form-group">
       <label for="name" class="text-light">Student Name</label>
@@ -9,7 +9,7 @@
           <button class="btn btn-danger input-group-text text-danger" v-on:click="removeStudent" :data="i">&times;</button>
         </div>
       </div>
-      <small id="emailHelp" class="form-text text-muted">Enter student's name</small>
+      <small class="form-text text-muted">Enter student's name</small>
     </div>
     <button v-on:click="addMoreStudents" class="btn btn-success mr-3">+</button>
     <hr class="bg-secondary"/>

@@ -23,7 +23,7 @@ StudentSchema.pre("remove", function (next) {
     .find({},
       {
         $pull: {
-          polishes: this._id
+          students: this._id
         }
       })
     .then(() => {
