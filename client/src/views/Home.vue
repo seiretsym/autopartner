@@ -95,9 +95,9 @@ export default {
         .get("/api/cohorts")
         .then(({ data }) => {
           this.cohorts = [...data];
-          this.selectedCohort = 0;
+          this.selectedCohort = [...this.cohorts[0].currentPairs]
         })
-        .catch(() => {
+        .catch(err => {
           alert("Error: Failed to retrieve cohort information. Please contact administrator.")
         })
     },
