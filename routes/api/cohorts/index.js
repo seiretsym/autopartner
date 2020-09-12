@@ -29,6 +29,7 @@ router.route("/:id")
     db.Cohort
       .find({ _id: req.params.id })
       .populate("students")
+      .populate("currentPairs")
       .then(data => {
         res.json(data);
       })

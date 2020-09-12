@@ -14,7 +14,10 @@ const CohortSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Student"
   }],
-  currentPairs: []
+  currentPairs: [{
+    type: Schema.Types.ObjectId,
+    ref: "Student"
+  }]
 })
 
 // hook to cascade delete students when a cohort is deleted
