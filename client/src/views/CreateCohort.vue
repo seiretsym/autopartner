@@ -8,7 +8,7 @@
       <input type="name" class="form-control" id="name" aria-describedby="name" ref="cohortName">
       <small class="form-text text-muted">Pick a name to help identify your cohort.</small>
     </div>
-    <button type="submit" v-on:click="createCohort" class="btn btn-success">Submit</button>
+    <button type="submit" v-on:click="createCohort" data-view="cohort_select" class="btn btn-success">Submit</button>
   </form>
 </div>
 </template>
@@ -25,6 +25,9 @@ const axios = require("axios");
 
 export default {
   name: 'CreateCohort',
+  props: {
+    changeView: Function,
+  },
   methods: {
     createCohort: function(event) {
       event.preventDefault();
@@ -36,6 +39,7 @@ export default {
         .post("/api/cohorts", newCohort)
         .then(data => {
           alert("New Cohort Added");
+          this.changeView(event);
           this.$refs.cohortName.value = "";
         })
         .catch(() => {

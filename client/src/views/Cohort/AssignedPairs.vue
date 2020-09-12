@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-darkgreen rounded body pr-3 p-0">
+  <div class="bg-darkgreen rounded body p-0">
     <div class="nav mt-auto">
       <button class="text-light" v-on:click="randomizePairs">Assign Pairs</button>
       <button class="text-light" v-on:click="savePairs">Save Pairs</button>
@@ -7,7 +7,7 @@
     <hr class="bg-secondary"/>
     <div class="student-list">
       <template v-for="(student, i) in assigned">
-        <ul v-if="i % 2 === 0" class="list-group room" :key="i">
+        <ul v-if="i % 2 === 0" class="list-group room p-0" :key="i">
           <li v-if="i % 2 === 0" class="list-group-item bg-success text-light font-weight-bold">Breakout Room {{ Math.round(i / 2 + 1) }}</li>
           <li class="list-group-item"> {{ student.name }} </li>
           <li v-if="assigned[i+1]" class="list-group-item"> {{ assigned[i+1].name }} </li>
@@ -18,6 +18,20 @@
 </template>
 
 <style scoped>
+::-webkit-scrollbar {
+  width: 15px;
+  background: #1c351c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #28A745;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1c351c;
+}
+
 button {
   background-color: transparent;
   border: none;
@@ -30,19 +44,31 @@ button:hover {
 }
 
 .room {
-  width: 23%;
-  margin: 10px 1%;
+  width: 24%;
+  margin: 10px auto 10px 0px;
+}
+
+.room:nth-child(4n-2),
+.room:nth-child(4n-1) {
+  margin: 10px auto;
+}
+
+.room:nth-child(4n) {
+  margin-right: 0px;
+  margin-left: auto;
 }
 
 .student-list {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  overflow: auto;
+  max-height: 425px;
+  padding-right: 15px;
 }
 
 .body {
   height: 485px;
-  overflow: auto;
 }
 </style>
 

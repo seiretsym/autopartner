@@ -19,6 +19,20 @@
   padding: 15px;
 }
 
+::-webkit-scrollbar {
+  width: 15px;
+  background: #1c351c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #28A745;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1c351c;
+}
+
 button {
   background-color: transparent;
   border: none;

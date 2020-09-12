@@ -9,9 +9,22 @@
 </template>
 
 <style scoped>
-
 .bg-darker {
   background-color: #1f1f1f;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  background: #1c351c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #28A745;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1c351c;
 }
 </style>
 
@@ -20,17 +33,19 @@ import Nav from "./components/Nav.vue";
 import CreateCohort from "./views/CreateCohort.vue";
 import SelectCohort from "./views/SelectCohort.vue";
 import Cohort from "./views/Cohort";
+import Home from "./views/Home";
 
 export default {
   name: "App",
   components: {
     Nav,
     CreateCohort,
-    SelectCohort
+    SelectCohort,
+    Home
   },
   data: function() {
     return {
-      view: null,
+      view: Home,
       cohort: String
     }
   },
@@ -50,7 +65,7 @@ export default {
           this.view = Cohort;
           break;
         default:
-          this.view = null;
+          this.view = Home;
       }
     }
   }

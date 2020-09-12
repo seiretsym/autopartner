@@ -6,6 +6,7 @@ router.route("/")
   .get((req, res) => {
     db.Cohort
       .find({})
+      .populate("currentPairs")
       .then(data => {
         res.json(data);
       })
