@@ -1,8 +1,8 @@
 <template>
   <div class="bg-darkgreen rounded body pr-3 p-0">
     <div class="nav mt-auto">
-      <button class="text-light" data-view="assigned_pairs">Assign Pairs</button>
-      <button class="text-light" data-view="view_students">Save Pairs</button>
+      <button class="text-light" v-on:click="randomizePairs">Assign Pairs</button>
+      <button class="text-light" v-on:click="savePairs">Save Pairs</button>
     </div>
     <hr class="bg-secondary"/>
     <div class="student-list">
@@ -10,7 +10,7 @@
         <ul v-if="i % 2 === 0" class="list-group room" :key="i">
           <li v-if="i % 2 === 0" class="list-group-item bg-success text-light font-weight-bold">Breakout Room {{ Math.round(i / 2 + 1) }}</li>
           <li class="list-group-item"> {{ student.name }} </li>
-          <li v-if="students[i+1]" class="list-group-item"> {{ students[i+1].name }} </li>
+          <li v-if="assigned[i+1]" class="list-group-item"> {{ assigned[i+1].name }} </li>
         </ul>
       </template>
     </div>
@@ -68,10 +68,91 @@ export default {
   },
   methods: {
     randomizePairs: function() {
-      const temp = [];
-        for (let i = 0; i < this.students.length; i++) {
-          
+      let temp = [];
+      let limit = 0;
+      let resetCount = 0;
+      let store = [...this.students]
+      if (this.students[0].matched.length === this.students.length - 1) {
+        alert("Students have paired with everyone at least once. Resetting count.")
+        this.students.map(student => {
+          student.matched = [];
+          return student;
+        })
+        store = [...this.students];
+      }
+      while (temp.length < this.students.length) {
+        const rng = Math.floor(Math.random() * store.length);
+        if (limit < 50) {
+          limit++
+        } else {
+          console.log("limit")
+          if (resetCount === 10) {
+            resetCount = 0;
+            alert("Algorithm taking too long. Resetting matches.")
+            this.students.map(student => {
+              student.matched = [];
+              return student;
+            })
+            store = [...this.students];
+          } else {
+            resetCount++
+            limit = 0;
+            temp = [];
+            store = [...this.students];
+          }
         }
+        if (temp.length > 0) {
+          if (temp.findIndex(student => student._id === store[rng]._id) < 0) {
+            if (temp.length % 2 === 1) {
+              if (temp[temp.length-1].matched.findIndex(id => id === store[rng]._id) < 0) {
+                temp.push(store[rng]);
+                store = store.filter((student, i) => i !== rng)
+              } else {
+                if (temp.length === this.students.length - 1) {
+                  console.log("reset")
+                  temp = [];
+                  store = [...this.students];
+                }
+              }
+            } else {
+              temp.push(store[rng]);
+              store = store.filter((student, i) => i !== rng)
+            }
+          }
+        } else {
+          temp.push(store[rng])
+          store = store.filter((student, i) => i !== rng)
+        }
+      }
+      this.assigned = [...temp]
+    },
+    savePairs: function() {
+      for (let i = 0; i < this.assigned.length; i++) {
+        if (i % 2 === 0) {
+          if (this.assigned[i+1]) {
+            this.assigned[i].matched.push(this.assigned[i+1]._id);
+            this.assigned[i+1].matched.push(this.assigned[i]._id);
+          }
+        }
+      }
+      const temp = this.assigned.map(student => {
+        const data = {
+          _id: student._id,
+          name: student.name,
+          matched: student.matched,
+          cohort: student.cohort
+        }
+        return data;
+      })
+      axios
+        .put("/api/students", temp)
+        .then(() => {
+          this.getStudents();
+          alert("Assignments Saved")
+        })
+        .catch(() => {
+          alert("Error: Error saving pair assignments. Contact Administrator.")
+        })
     },
     getStudents: function() {
       axios
