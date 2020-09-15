@@ -45,18 +45,19 @@ button:hover {
 
 .room {
   width: 24%;
-  margin: 10px auto 10px 0px;
+  margin: 10px 0.6667% 10px 0px;
 }
 
-.room:nth-child(4n-2),
-.room:nth-child(4n-1) {
-  margin: 10px auto;
+.room:nth-child(4n+2),
+.room:nth-child(4n+3),
+.room:nth-child(4n-1),
+.room:nth-child(4n-2) {
+  margin: 10px 0.6667% 10px 0.6667%;
 }
 
 .room:nth-child(4n) {
-  margin-right: 0px;
-  margin-left: auto;
-}
+  margin: 10px 0px 10px 0.6667%;
+} 
 
 .student-list {
   display: flex;
