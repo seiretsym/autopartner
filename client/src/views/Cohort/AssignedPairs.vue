@@ -1,7 +1,7 @@
 <template>
   <div class="bg-darkgreen rounded body p-0">
     <div class="nav mt-auto">
-      <button class="text-light" v-on:click="randomizePairs">Assign Pairs</button>
+      <button class="text-light" v-on:click="randomizePairs">Randomize Pairs</button>
       <button class="text-light" v-on:click="savePairs">Save Pairs</button>
     </div>
     <hr class="bg-secondary"/>
@@ -94,6 +94,30 @@ export default {
   },
   methods: {
     randomizePairs: function() {
+      // let left = [];
+      // let right = [];
+      // let temp = [];
+      // let store = [...this.students]
+
+      // // randomly split students into left and right arrays
+      // while (store.length > 0) {
+      //   let rng = Math.floor(Math.random() * store.length);
+        
+      //   // guarantees that students are split evenly
+      //   if (store.length % 2 === 0) {
+      //     left.push(store[rng])
+      //   } else {
+      //     right.push(store[rng])
+      //   }
+
+      //   // remove student from store after placement
+      //   store = store.filter(student => student._id !== store[rng]._id)
+      // }
+
+      
+      // console.log("Left: ", left)
+      // console.log("right", right)
+
       let temp = [];
       let limit = 0;
       let resetCount = 0;
@@ -112,7 +136,7 @@ export default {
           limit++
         } else {
           console.log("limit")
-          if (resetCount === 10) {
+          if (resetCount === 50) {
             resetCount = 0;
             alert("Algorithm taking too long. Resetting matches.")
             this.students.map(student => {
