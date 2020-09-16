@@ -2,10 +2,12 @@
 **Technologies Used:** Vue, Mongoose, Heroku, Node, Express, HTML, Bootstrap, Javascript, CSS, Git, GitHub, VSCode 
 
 ## Summary
-Purpose of this app was to help me automate pairing students in a zoom class. It has some algorithms that attempts to pairs students with people they haven't paired with before.
+Purpose of this app was to help me automate pairing students in a zoom class. It uses a round robin tournament style algorithm to rotate the students, ensuring that every student will pair with every other student in the class.
+
+## Changes
+- Changed the pairing algorithm to round robin tournament style. This ensures that every one gets a chance to pair with everyone.
 
 ## Goals
-- Improve the Pairing Algorithm
 - Improve UI/UX
 - Maybe add an account feature to filter data between users
 - Add ability to edit Cohort/Student names
