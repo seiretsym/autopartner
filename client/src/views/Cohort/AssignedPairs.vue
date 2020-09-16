@@ -1,7 +1,7 @@
 <template>
   <div class="bg-darkgreen rounded body p-0">
     <div class="nav mt-auto">
-      <button class="text-light" v-on:click="randomizePairs">Randomize Pairs</button>
+      <button class="text-light" v-on:click="rotatePairs">Rotate Pairs</button>
       <button class="text-light" v-on:click="savePairs">Save Pairs</button>
     </div>
     <hr class="bg-secondary"/>
@@ -94,109 +94,76 @@ export default {
     }
   },
   methods: {
-    randomizePairs: function() {
-      // let left = [];
-      // let right = [];
-      // let temp = [];
-      // let store = [...this.students]
-
-      // // randomly split students into left and right arrays
-      // while (store.length > 0) {
-      //   let rng = Math.floor(Math.random() * store.length);
-        
-      //   // guarantees that students are split evenly
-      //   if (store.length % 2 === 0) {
-      //     left.push(store[rng])
-      //   } else {
-      //     right.push(store[rng])
-      //   }
-
-      //   // remove student from store after placement
-      //   store = store.filter(student => student._id !== store[rng]._id)
-      // }
-
-      
-      // console.log("Left: ", left)
-      // console.log("right", right)
-
-      let temp = [];
-      let limit = 0;
-      let resetCount = 0;
-      let store = [...this.students]
-      if (this.students[0].matched.length === this.students.length - 1) {
-        alert("Students have paired with everyone at least once. Resetting count.")
-        this.students.map(student => {
-          student.matched = [];
-          return student;
-        })
-        store = [...this.students];
-      }
-      while (temp.length < this.students.length) {
-        const rng = Math.floor(Math.random() * store.length);
-        if (limit < 50) {
-          limit++
-        } else {
-          console.log("limit")
-          if (resetCount === 50) {
-            resetCount = 0;
-            alert("Algorithm taking too long. Resetting matches.")
-            this.students.map(student => {
-              student.matched = [];
-              return student;
-            })
-            store = [...this.students];
+    rotatePairs: function() {
+      // check if students have been paired before
+      if (this.assigned.length > 0) {
+        // if they have...
+        let odd = [];
+        let even = [];
+        // split them into odd and evens
+        for (let i = 0; i < this.assigned.length; i++) {
+          if (i % 2 === 0) {
+            odd.push(this.assigned[i])
           } else {
-            resetCount++
-            limit = 0;
-            temp = [];
-            store = [...this.students];
+            even.push(this.assigned[i])
           }
         }
-        if (temp.length > 0) {
-          if (temp.findIndex(student => student._id === store[rng]._id) < 0) {
-            if (temp.length % 2 === 1) {
-              if (temp[temp.length-1].matched.findIndex(id => id === store[rng]._id) < 0) {
-                temp.push(store[rng]);
-                store = store.filter((student, i) => i !== rng)
-              } else {
-                if (temp.length === this.students.length - 1) {
-                  console.log("reset")
-                  temp = [];
-                  store = [...this.students];
-                }
-              }
-            } else {
-              temp.push(store[rng]);
-              store = store.filter((student, i) => i !== rng)
-            }
+
+        // rotate the students round robin tournament style
+        let tempA = odd.pop();
+        let tempB = even.shift();
+        even.push(tempA);
+        let temp = [];
+        for (let i = 0; i < odd.length; i++) {
+          if (i === 1) {
+            temp.push(tempB);
           }
-        } else {
-          temp.push(store[rng])
-          store = store.filter((student, i) => i !== rng)
+          temp.push(odd[i])
         }
+        odd = [...temp];
+
+        // set them up for new pair display
+        let newPairs = [];
+        for (let i = 0; i < odd.length; i++) {
+          newPairs.push(odd[i])
+          if (even[i]) {
+            newPairs.push(even[i])
+          }
+        }
+
+        // reassign the current assigned pairs
+        this.assigned = [...newPairs];
+      } else {
+        // if they haven't been assigned yet,
+        // split them into odds and evens
+        let split = Math.ceil(this.students.length/2);
+        let odd = [...this.students.slice(0, split)];
+        let even = [...this.students.slice(split, this.students.length)]
+        let temp = [];
+        // pair them based on the split in a round robin tournament style
+        for (let i = 0; i < split; i++) {
+          temp.push(odd[i]);
+          if (even[i]) {
+            temp.push(even[i])
+          }
+        }
+
+        // assign them
+        this.assigned = [...temp];
       }
-      this.assigned = [...temp]
     },
     savePairs: function() {
-      for (let i = 0; i < this.assigned.length; i++) {
-        if (i % 2 === 0) {
-          if (this.assigned[i+1]) {
-            this.assigned[i].matched.push(this.assigned[i+1]._id);
-            this.assigned[i+1].matched.push(this.assigned[i]._id);
-          }
-        }
-      }
-      const temp = this.assigned.map(student => {
-        const data = {
+      const data = this.assigned.map(student => {
+        const temp = {
           _id: student._id,
           name: student.name,
           matched: student.matched,
           cohort: student.cohort
         }
-        return data;
+        return temp;
       })
       axios
-        .put("/api/students", temp)
+        .put("/api/students", data)
         .then(() => {
           this.getStudents();
           alert("Assignments Saved")

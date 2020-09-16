@@ -38,8 +38,7 @@ const StudentSchema = new Schema({
   cohort: {
     type: Schema.Types.ObjectId,
     required: true
-  },
-  matched: []
+  }
 })
 
 // hook to remove student from existing cohorts when a student is deleted
