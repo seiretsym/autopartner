@@ -23,7 +23,7 @@ router.route("/")
       .catch(() => {
         res.json(false)
       })
-  })
+  });
 
 router.route("/:id")
   .get((req, res) => {
@@ -49,6 +49,6 @@ router.route("/:id")
         console.log(err);
         res.json(false);
       })
-  })
+  });
 
-module.exports = router
+module.exports = router;

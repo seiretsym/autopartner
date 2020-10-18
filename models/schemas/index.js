@@ -70,7 +70,6 @@ StudentSchema.post("save", function (next) {
 })
 
 // create instructor model
-// create schema
 const InstructorSchema = new Schema({
   username: {
     type: String,
@@ -106,4 +105,8 @@ const Cohort = mongoose.model("Cohort", CohortSchema);
 const Instructor = mongoose.model("Instructor", InstructorSchema);
 
 // export model
-module.exports = { Cohort: Cohort, Student: Student, Instructor: Instructor };
+module.exports = {
+  Cohort: Cohort,
+  Student: Student,
+  Instructor: Instructor
+};
