@@ -90,16 +90,20 @@ export default {
       selectedCohort: Array,
     }
   },
+  props: {
+    user: String
+  },
   methods: {
     getCohorts: function() {
       axios
-        .get("/api/cohorts")
+        .get(`/api/instructors/${this.user}`)
         .then(({ data }) => {
-          this.cohorts = [...data];
+          console.log(data);
+          this.cohorts = [...data.cohorts];
           this.selectedCohort = [...this.cohorts[0].currentPairs]
         })
         .catch(err => {
-          alert("Error: Failed to retrieve cohort information. Please contact administrator.")
+          this.cohorts = [];
         })
     },
     loadStudents: function(event) {

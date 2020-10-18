@@ -80,11 +80,11 @@ const InstructorSchema = new Schema({
     type: String,
     required: true
   },
-  cohorts: {
+  cohorts: [{
     type: Schema.Types.ObjectId,
     required: false,
     ref: "Cohort"
-  }
+  }]
 })
 
 // create hook to hash instructor passwords as accounts are created

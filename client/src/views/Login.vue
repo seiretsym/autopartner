@@ -12,7 +12,7 @@
               <input type="submit" class="btn btn-success" v-on:click="login" value="Login">
               <div class="mt-auto ml-auto text-light">
                 Don't have an account?
-                <span v-on:click="(event) => changeView(event, 'register')" class="text-success link">
+                <span v-on:click="(event) => toggleView(event, 'register')" class="text-success link">
                   Register Here
                 </span>
               </div>
@@ -118,7 +118,8 @@ export default {
   },
   props: {
     setAuth: Function,
-    changeView: Function
+    changeView: Function,
+    setUser: Function
   },
   methods: {
     toggleView: function(event, view) {
@@ -146,6 +147,7 @@ export default {
           .then(({ data }) => {
             console.log(data);
             this.setAuth(true);
+            this.setUser(data._id);
             this.changeView(event);
           })
           .catch(err => {
@@ -205,9 +207,11 @@ export default {
           .then(({ data }) => {
             console.log(data);
             this.setAuth(true);
+            this.setUser(data._id);
             this.changeView(event);
           })
           .catch(error => {
+            console.log(error);
             userR.value = "";
             userR.setAttribute("placeholder", "username already in use");
             userR.focus();

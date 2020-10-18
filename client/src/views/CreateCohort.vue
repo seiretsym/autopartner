@@ -27,12 +27,14 @@ export default {
   name: 'CreateCohort',
   props: {
     changeView: Function,
+    user: String
   },
   methods: {
     createCohort: function(event) {
       event.preventDefault();
       const newCohort = {
-        name: this.$refs.cohortName.value
+        name: this.$refs.cohortName.value,
+        user: this.user
       }
       console.log(newCohort);
       axios

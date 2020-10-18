@@ -15,10 +15,21 @@ router.route("/")
       })
   })
   .post((req, res) => {
+    const cohort = {
+      name: req.body.name
+    };
+    const user = req.body.user;
     db.Cohort
-      .create(req.body)
-      .then(() => {
-        res.json(true);
+      .create(cohort)
+      .then(data => {
+        db.Instructor
+          .updateOne({ _id: user },
+            {
+              $push: { cohorts: data._id }
+            })
+          .then(() => {
+            res.json(true);
+          });
       })
       .catch(() => {
         res.json(false)

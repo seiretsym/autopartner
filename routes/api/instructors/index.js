@@ -11,6 +11,7 @@ router.route("/")
         return res.status(200).json(user);
       })
       .catch(err => {
+        console.log(err);
         return res.status(422).json(err);
       })
   })
@@ -35,16 +36,26 @@ router.route("/")
 // path to /api/routes/instructors/:id
 router.route("/:id")
   .get((req, res) => {
+    console.log(req.params.id)
     db.Instructor
       .findOne({ _id: req.params.id })
-      .populate("cohorts")
-      .then(({ data }) => {
-        res.json({
-          ...data,
-          password: ""
-        })
+      .populate({
+        path: "cohorts",
+        populate: [{
+          path: "students",
+          model: db.Student
+        },
+        {
+          path: "currentPairs",
+          model: db.Student
+        }]
+      })
+      .then(data => {
+        console.log(data)
+        res.json(data)
       })
       .catch(err => {
+        console.log(err)
         res.json({ error: err})
       })
   })

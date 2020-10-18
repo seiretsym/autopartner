@@ -4,7 +4,7 @@
       <h1 class="display-1">Auto Partner</h1>
     </div>
     <Nav :changeView="changeView" :auth="auth"/>
-    <div :is="view" :cohort="cohort" :changeView="changeView" :setAuth="setAuth"/>
+    <div :is="view" :cohort="cohort" :changeView="changeView" :setAuth="setAuth" :setUser="setUser" :user="user"/>
   </div>
 </template>
 
@@ -49,10 +49,14 @@ export default {
     return {
       view: Login,
       cohort: String,
-      auth: false
+      auth: false,
+      user: String
     }
   },
   methods: {
+    setUser: function(id) {
+      this.user = id;
+    },
     changeView: function(event) {
       event.preventDefault();
       const view = event.target.getAttribute("data-view");
