@@ -34,6 +34,7 @@ import CreateCohort from "./views/CreateCohort.vue";
 import SelectCohort from "./views/SelectCohort.vue";
 import Cohort from "./views/Cohort";
 import Home from "./views/Home";
+import Login from "./views/Login";
 
 export default {
   name: "App",
@@ -41,11 +42,12 @@ export default {
     Nav,
     CreateCohort,
     SelectCohort,
-    Home
+    Home,
+    Login
   },
   data: function() {
     return {
-      view: Home,
+      view: Login,
       cohort: String
     }
   },
