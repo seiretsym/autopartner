@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-// const Student = require("../student");
+const bcrypt = require("bcrypt");
 
 // schema structure
 const Schema = mongoose.Schema
 
-// create schema
+// create cohort schema
 const CohortSchema = new Schema({
   name: {
     type: String,
@@ -29,7 +29,7 @@ CohortSchema.pre("deleteOne", function (next) {
     })
 })
 
-// create schema
+// create student schema
 const StudentSchema = new Schema({
   name: {
     type: String,
@@ -69,12 +69,41 @@ StudentSchema.post("save", function (next) {
     })
 })
 
+// create instructor model
+// create schema
+const InstructorSchema = new Schema({
+  username: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  cohorts: {
+    type: Schema.Types.ObjectId,
+    required: false,
+    ref: "Cohort"
+  }
+})
+
+// create hook to hash instructor passwords as accounts are created
+InstructorSchema.pre("save", function (next) {
+  if (this.isModified('password')) {
+    this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10), null);
+  }
+  return next();
+})
+
+// method for checking instructor password
+InstructorSchema.methods.checkPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+}
+
 // create model
 const Student = mongoose.model("Student", StudentSchema);
-
-
-// create model
 const Cohort = mongoose.model("Cohort", CohortSchema);
+const Instructor = mongoose.model("Instructor", InstructorSchema);
 
 // export model
-module.exports = { Cohort: Cohort, Student: Student };
+module.exports = { Cohort: Cohort, Student: Student, Instructor: Instructor };
