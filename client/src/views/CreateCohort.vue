@@ -34,9 +34,8 @@ export default {
       event.preventDefault();
       const newCohort = {
         name: this.$refs.cohortName.value,
-        user: this.user
+        owner: this.user
       }
-      console.log(newCohort);
       axios
         .post("/api/cohorts", newCohort)
         .then(data => {

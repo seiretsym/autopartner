@@ -17,7 +17,11 @@ const CohortSchema = new Schema({
   currentPairs: [{
     type: Schema.Types.ObjectId,
     ref: "Student"
-  }]
+  }],
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "Instructor"
+  }
 })
 
 // hook to cascade delete students when a cohort is deleted
@@ -25,7 +29,15 @@ CohortSchema.pre("deleteOne", function (next) {
   Student
     .deleteMany({ cohort: mongoose.Types.ObjectId(this._conditions._id) })
     .then(() => {
-      next();
+      Instructor.updateMany({},
+        {
+          $pull: {
+            cohorts: mongoose.Types.ObjectId(this._conditions._id)
+          }
+        })
+      .then(() => {
+        next();
+      })
     })
 })
 

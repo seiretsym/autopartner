@@ -145,7 +145,6 @@ export default {
         axios
           .put("/api/instructors", user)
           .then(({ data }) => {
-            console.log(data);
             this.setAuth(true);
             this.setUser(data._id);
             this.changeView(event);
@@ -205,13 +204,11 @@ export default {
         axios
           .post("/api/instructors", user)
           .then(({ data }) => {
-            console.log(data);
             this.setAuth(true);
             this.setUser(data._id);
             this.changeView(event);
           })
           .catch(error => {
-            console.log(error);
             userR.value = "";
             userR.setAttribute("placeholder", "username already in use");
             userR.focus();

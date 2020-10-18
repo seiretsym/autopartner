@@ -98,7 +98,6 @@ export default {
       axios
         .get(`/api/instructors/${this.user}`)
         .then(({ data }) => {
-          console.log(data);
           this.cohorts = [...data.cohorts];
           this.selectedCohort = [...this.cohorts[0].currentPairs]
         })

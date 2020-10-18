@@ -59,5 +59,38 @@ router.route("/:id")
         res.json({ error: err})
       })
   })
+  .put((req, res) => {
+    switch(req.body.event) {
+      case "leave":
+        db.Instructor
+        .updateOne({ _id: req.params.id },
+          {
+            $pull: {
+              cohorts: req.body.cohortId
+            }
+          })
+        .then(() => {
+          res.json(true)
+        })
+        .catch(() => {
+          res.json(false)
+        })
+        break;
+      default:
+        db.Instructor
+          .updateOne({ _id: req.params.id },
+            {
+              $push: {
+                cohorts: req.body.cohortId
+              }
+            })
+          .then(() => {
+            res.json(true)
+          })
+          .catch(() => {
+            res.json(false)
+          })
+      }
+  })
 
 module.exports = router;

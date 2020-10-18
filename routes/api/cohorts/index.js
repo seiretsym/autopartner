@@ -15,15 +15,11 @@ router.route("/")
       })
   })
   .post((req, res) => {
-    const cohort = {
-      name: req.body.name
-    };
-    const user = req.body.user;
     db.Cohort
-      .create(cohort)
+      .create(req.body)
       .then(data => {
         db.Instructor
-          .updateOne({ _id: user },
+          .updateOne({ _id: req.body.owner },
             {
               $push: { cohorts: data._id }
             })
