@@ -6,14 +6,18 @@
     <h5 class="text-light">My Cohorts</h5>
       <div v-for="cohort in myCohorts" :key="cohort._id" class="d-flex bg-success cohort-list-item rounded">
         <span class="text-light my-auto">{{ cohort.name }}</span>
-        <button data-view="cohort_selected" :data="cohort._id" v-on:click="changeView" class="ml-auto btn bg-darkgreen text-light w-10">Select</button>
-        <button v-if="user === cohort.owner" v-on:click="deleteCohort" :data="cohort._id" class="ml-3 btn bg-darkgreen text-light w-10">Delete</button>
-        <button v-else v-on:click="leaveCohort" :data="cohort._id" class="ml-3 btn bg-darkgreen text-light w-10">Leave</button>
+        <template v-if="user === cohort.owner">
+          <button data-view="cohort_selected" :data="cohort._id" v-on:click="changeView" class="ml-auto btn bg-darkgreen text-light w-10">Select</button>
+          <button v-on:click="deleteCohort" :data="cohort._id" class="ml-3 btn bg-darkgreen text-light w-10">Delete</button>
+        </template>
+        <template v-else>
+          <button v-on:click="leaveCohort" :data="cohort._id" class="ml-auto btn bg-darkgreen text-light w-10">Leave</button>
+        </template>
       </div>
     </template>
     <template v-if="cohorts.length > 0">
       <h5 class="text-light">Other Cohorts</h5>
-      <div v-for="cohort in cohorts" :key="cohort._id" class="d-flex bg-success cohort-list-item rounded">
+      <div v-for="cohort in cohorts" :key="cohort._id + 'o'" class="d-flex bg-success cohort-list-item rounded">
         <span class="text-light my-auto">{{ cohort.name }}</span>
         <button :data="cohort._id" v-on:click="addCohort" class="ml-auto btn bg-darkgreen text-light w-10">Join</button>
       </div>
