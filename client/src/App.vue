@@ -3,8 +3,8 @@
     <div class="jumbotron bg-darker text-success text-center">
       <h1 class="display-1">Auto Partner</h1>
     </div>
-    <Nav :changeView="changeView" />
-    <div :is="view" :cohort="cohort" :changeView="changeView" />
+    <Nav :changeView="changeView" :auth="auth"/>
+    <div :is="view" :cohort="cohort" :changeView="changeView" :setAuth="setAuth"/>
   </div>
 </template>
 
@@ -48,7 +48,8 @@ export default {
   data: function() {
     return {
       view: Login,
-      cohort: String
+      cohort: String,
+      auth: false
     }
   },
   methods: {
@@ -66,9 +67,15 @@ export default {
           this.cohort = event.target.getAttribute("data")
           this.view = Cohort;
           break;
+        case "login":
+          this.view = Login;
+          break;
         default:
           this.view = Home;
       }
+    },
+    setAuth: function(auth) {
+      this.auth = auth;
     }
   }
 }

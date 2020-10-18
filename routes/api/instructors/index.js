@@ -7,13 +7,11 @@ router.route("/")
     db.Instructor
       .create(req.body)
       .then(user => {
-        res.json({
-          ...user,
-          password: ""
-        });
+        user.password = "";
+        return res.status(200).json(user);
       })
       .catch(err => {
-        res.json({ error: err })
+        return res.status(422).json(err);
       })
   })
   .put((req, res) => {
@@ -21,15 +19,12 @@ router.route("/")
       .findOne({ username: req.body.username })
       .then(user => {
         if (!user) {
-          return res.json({ error: "User not found" })
+          return res.status(404).json({ error: "User not found" })
         } else if (!user.checkPassword(req.body.password)) {
-          return res.json({ error: "Incorrect Password" })
+          return res.status(401).json({ error: "Incorrect Password" })
         } else {
-          return res.json({ 
-            ...user,
-            password: "",
-            success: true
-          });
+          user.password = "";
+          return res.status(200).json(user);
         }
       })
       .catch(err => {
@@ -43,9 +38,9 @@ router.route("/:id")
     db.Instructor
       .findOne({ _id: req.params.id })
       .populate("cohorts")
-      .then(user => {
+      .then(({ data }) => {
         res.json({
-          ...user,
+          ...data,
           password: ""
         })
       })

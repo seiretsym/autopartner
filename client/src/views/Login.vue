@@ -30,7 +30,7 @@
               <input type="submit" class="btn btn-success" v-on:click="register" value="Register">
               <div class="mt-auto ml-auto text-light">
                 Already registered?
-                <span v-on:click="(event) => changeView(event, 'login')" class="text-success link">
+                <span v-on:click="(event) => toggleView(event, 'login')" class="text-success link">
                   Login
                 </span>
               </div>
@@ -116,8 +116,12 @@ export default {
       view: "login"
     };
   },
+  props: {
+    setAuth: Function,
+    changeView: Function
+  },
   methods: {
-    changeView: function(event, view) {
+    toggleView: function(event, view) {
       event.preventDefault();
       this.view = view;
     },
@@ -134,10 +138,28 @@ export default {
         passL.focus();
       } else {
         const user = {
-          username: this.$refs.userL.value,
-          password: this.$refs.passL.value
+          username: userL.value.toLowerCase(),
+          password: passL.value
         }
-        console.log(user)
+        axios
+          .put("/api/instructors", user)
+          .then(({ data }) => {
+            console.log(data);
+            this.setAuth(true);
+            this.changeView(event);
+          })
+          .catch(err => {
+            const error = "" + err;
+            if (error.match("404")) {
+              userL.value = "";
+              userL.setAttribute("placeholder", "username not found");
+              userL.focus();
+            } else if (error.match("401")) {
+              passL.value = "";
+              passL.setAttribute("placeholder", "incorrect password");
+              passL.focus();
+            }
+          })
       }
     },
     register: function(event) {
@@ -175,10 +197,21 @@ export default {
       // all good? let's register
       else {
         const user = {
-          username: userR.value,
+          username: userR.value.toLowerCase(),
           password: passR.value
         }
-        console.log(user);
+        axios
+          .post("/api/instructors", user)
+          .then(({ data }) => {
+            console.log(data);
+            this.setAuth(true);
+            this.changeView(event);
+          })
+          .catch(error => {
+            userR.value = "";
+            userR.setAttribute("placeholder", "username already in use");
+            userR.focus();
+          })
       }
     }
   }
